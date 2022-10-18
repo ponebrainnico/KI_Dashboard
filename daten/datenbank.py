@@ -1,110 +1,36 @@
 import pandas as pd
-from google.oauth2 import service_account
 
-credentials = service_account.Credentials.from_service_account_file('daten/Pone_datawarehouse_.json')
-project_id = "datawarehouse-271615"
-customer= 'Lamm' ###### TODO: HIER ZUGRIFF AUF EINGABEMASKE
+df_p1 = pd.DataFrame({'Branche': ['IKT', 'Finanzdienstleistungen', 'Unternehmensnahe Dienstleistungen', 'Elektrotechnik/Maschinenbau',
+                                  'Fahrzeugbau', 'Chemie/Ph., Gr.st.', 'Ver-/Entsorg., Bg.b.', 'Sonst. Verarb. Gew.', 'Sonst. Dienstleist.',
+                                  'Verkehr, Logistik', 'Großhandel'],
+                      'Anteil': [17.8, 12.2, 11.1, 6.8, 5.1, 4.6, 3.6, 3.3, 2.5, 1.5, 1]})
 
+df_p2 = pd.DataFrame({'Branche': ['IKT', 'Finanzdienstleistungen', 'Unternehmensnahe Dienstleistungen', 'Elektrotechnik/Maschinenbau',
+                                  'Fahrzeugbau', 'Chemie/Ph., Gr.st.', 'Ver-/Entsorg., Bg.b.', 'Sonst. Verarb. Gew.', 'Sonst. Dienstleist.',
+                                  'Verkehr, Logistik', 'Großhandel'],
+                      'Anteil Umsatz': [3.3, 3, 2.1, 1.3, 0.6, 0.7, 0.8, 0.9, 0.5, 0.5, 0.4],
+                      'Anteil Ausgaben': [0.56, 0.04, 0.29, 0.17, 0.16, 0.03, 0.01, 0.04, 0.12, 0.06, 0.01],
+                      ' ': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]})
 
-def google_ads(start_datum, end_datum):
-    # Für Seite 1
-    sql_g_ads = """
-    SELECT
-        campaign as Kampagne,
-        SUM(clicks) as Klicks,
-        SUM(conversions) as Transaktionen,
-        ROUND(SUM(cost),2) as Kosten,
-        (SUM(cost) / SUM(clicks)) as CPC,
-        ROUND(AVG(average_cpc),2) as CPC_avg,
-        ROUND(AVG(average_cpm),2) as CPM_avg,
-        (SUM(cost) / SUM(impressions))*1000 as CPM,
-        SUM(impressions) as Impressionen,
-    FROM `datawarehouse-271615.PerformanceOne.BO_{2}_Ads_Kampagnen`
-    WHERE day >= '{0}' AND day <= '{1}'
-    GROUP BY campaign
-    """.format(start_datum, end_datum, customer)
-    df_g_ads = pd.read_gbq(sql_g_ads, project_id=project_id, dialect='standard', credentials=credentials)
-    return df_g_ads
+df_p3 = pd.DataFrame({'Unternehmen': ['KI-Entwickler', 'KI-Berater', 'KI-Anwender', 'KI-Startups insgesamt', 'alle Gründungen'],
+                      'aktiv': [93, 93, 88, 92, 45],
+                      'vermutlich stillgelegt': [2, 2, 4, 3, 19],
+                      'geschlossen': [5, 6, 7, 6, 36]})
 
-def google_ads_agg(start_datum, end_datum):
-    # Für Seite 2
-    sql_g_ads_agg = """
-    SELECT
-        SUM(clicks) as Klicks,
-        SUM(conversions) as Transaktionen,
-        ROUND(SUM(cost),2) as Kosten,
-        (SUM(cost) / SUM(clicks)) as CPC,
-        ROUND(AVG(average_cpc),2) as CPC_avg,
-        (SUM(cost) / SUM(impressions))*1000 as CPM,
-        ROUND(AVG(average_cpm),2) as CPM_avg,
-        (SUM(clicks) / sum(impressions))*100 as CTR,
-        SUM(impressions) as Impressionen,
-        'Google Ads' as Kanal
-    FROM `datawarehouse-271615.PerformanceOne.BO_{2}_Ads_Kampagnen`
-    WHERE day >= '{0}' AND day <= '{1}'
-    """.format(start_datum, end_datum, customer)
-    df_g_ads_agg = pd.read_gbq(sql_g_ads_agg, project_id=project_id, dialect='standard', credentials=credentials)
-    
-    return df_g_ads_agg
+df_p4 = pd.DataFrame({'Unternehmensbereich': ['Marketing', 'Produktion und Instandhaltung', 'Kundendienst', 'Vertrieb', 'Bereichsübergreifend bei Texten o. Übersetzungen',
+                      'Buchaltung', 'Managementunterstützung bei der Strategieentwicklung', 'IT-Abteilung', 'Logistik', 'Forschung und Entwicklung', 'Personalabteilung',
+                      'Controlling', 'Rechts- und Steuerabteilung'],
+                      'Anteil': [71, 64, 63, 53, 50, 44, 43, 39, 35, 25, 21, 18, 1]})
 
-
-def google_ads_keywords(start_datum, end_datum):
-    # Für Seite 4
-    sql_g_ads = """
-    SELECT
-        campaign as Kampagne,
-        ad_group_criterion_keyword_text AS Keyword,
-        SUM(clicks) AS Klicks,
-        SUM(impressions) AS Impressionen,
-        (SUM(clicks) / NULLIF(SUM(impressions), 0)) AS CTR,
-        (SUM(CAST(search_impr_share AS FLOAT64) * impressions) / NULLIF(SUM(impressions), 0)) AS Anteil_moegliche_Impressionen,
-        (SUM(CAST(search_top_impression_share AS FLOAT64) * impressions) / NULLIF(SUM(impressions), 0)) AS Impressionen_top
-    FROM `datawarehouse-271615.PerformanceOne.BO_{2}_Ads_Keywords`
-    WHERE day >= '{0}' AND day <= '{1}'
-    GROUP BY campaign, ad_group_criterion_keyword_text
-    """.format(start_datum, end_datum, customer)
-    df_g_ads = pd.read_gbq(sql_g_ads, project_id=project_id, dialect='standard')
-    return df_g_ads
-
-
-def microsoft_ads_agg(start_datum, end_datum):
-    # Microsoft Ads ### Achtung: cpm berechnen
-    # Für Seite 1
-    sql_m_ads_agg = """
-    SELECT 
-        SUM(clicks) as Klicks,
-        SUM(impressions) as Impressionen,
-        ROUND(SUM(costs),2) as Kosten,
-        (SUM(clicks) / sum(impressions))*100 as CTR,
-        ROUND(AVG(averagecpc),2) as CPC_avg,
-        SUM(conversion_value) as Transaktionen,
-        ROUND(SUM(allrevenue),2) as Umsatz,
-        (SUM(costs) / SUM(clicks)) as CPC,
-        (SUM(costs) / SUM(impressions))*1000 as CPM,
-        'Microsoft Ads' as Kanal
-    FROM `datawarehouse-271615.PerformanceOne.BO_{2}_MicrosoftAds_Kampagnen`
-    WHERE timeperiod >= '{0}' AND timeperiod <= '{1}'
-    """.format(start_datum, end_datum, customer)
-    df_m_ads_agg = pd.read_gbq(sql_m_ads_agg, project_id=project_id, dialect='standard', credentials=credentials)
-    return df_m_ads_agg
-
-
-def microsoft_ads(start_datum, end_datum):
-    # Für Seite 3
-    sql_m_ads = """
-    SELECT
-        campaign as Kampagne,
-        SUM(clicks) as Klicks,
-        SUM(impressions) as Impressionen,
-        SUM(costs) as Kosten,
-        SUM(conversions_post_click) as Transaktionen,
-        SUM(conversion_value) as Umsatz,
-        SUM(costs) / SUM(clicks) as CPC,
-        (SUM(costs) / SUM(impressions))*1000 as CPM,
-        (SUM(clicks) / SUM(impressions)) as CTR
-    FROM `datawarehouse-271615.PerformanceOne.BO_{2}_MicrosoftAds_Kampagnen`
-    WHERE timeperiod >= '{0}' AND timeperiod <= '{1}'
-    GROUP BY campaign
-    """.format(start_datum, end_datum, customer)
-    df_m_ads = pd.read_gbq(sql_m_ads, project_id=project_id, dialect='standard')
-    return df_m_ads
+df_p5 = pd.DataFrame({'Faktor': ['Verbesserung der technischen Ausstattung im Bereich IT',
+                                 'Staatliche finanzielle Förderung',
+                                 'Datenschutzkonforme Cloud-Angebote',
+                                 'Vertrauen von Nutzern und Anwendern in KI',
+                                 'Umfassendere Information der Öffentlichkeit über KI und dessen Nutzen',
+                                 'Verfügbarkeit großer Datenmengen aus öffentlichen Quellen',
+                                 'Mehr Weiterbildungsangebote zum Thema KI',
+                                 'Anpassung des Datenschutzen, um KI-basierte Analysen zu erleichtern',
+                                 'Größeres Angebot an Fachkräften mit KI-Kompetenzen'],
+                      'stark': [46, 44, 43, 36, 27, 26, 24, 21, 17],
+                      'weniger stark': [24, 27, 23, 35, 34, 40, 34, 34, 39],
+                      'gar nicht': [30, 29, 34, 29, 39, 34, 41, 44, 44]})
