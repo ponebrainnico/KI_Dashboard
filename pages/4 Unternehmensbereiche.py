@@ -2,7 +2,6 @@ import streamlit as st
 import ui.template as template
 from daten.datenbank import df_p4
 import altair as alt
-import pandas as pd
 from streamlit_extras.switch_page_button import switch_page
 
 
