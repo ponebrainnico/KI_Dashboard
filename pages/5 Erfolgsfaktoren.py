@@ -25,7 +25,7 @@ c = alt.Chart(df_p5_melt).transform_calculate(
         x=alt.X('sum(value)', title='Anteil', stack='normalize', axis=alt.Axis(grid=False, format='.0%', tickCount=6)),
         y=alt.Y('Faktor', sort=alt.SortField('sort_key', order='descending')),
         color=alt.Color('variable:N', sort=cat_order, scale=color_scale, legend=alt.Legend(title=None)),
-        tooltip=[alt.Tooltip('value', format='.0%'), alt.Tooltip('value', format='.0%')],
+        tooltip=[alt.Tooltip('variable', title='Wichtigkeit'), alt.Tooltip('value', format='.0%', title='Anteil')],
         order=alt.Order('color_variable_sort_key:Q')
     ).properties(width=800, height=250)
 

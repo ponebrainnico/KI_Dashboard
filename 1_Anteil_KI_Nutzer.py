@@ -39,11 +39,11 @@ chart.altair_chart(c)
 
 if option != 'Keine Angabe' and option2 != 'Keine Angabe':
     if option2 == 'Ja':
-        st.caption('Dann sind Sie ' + str(100 - df_p1[df_p1['Branche'] == option].iloc[0, 1]) + '% Ihrer Wettbewerber voraus!')
+        st.write('Dann sind Sie ' + str(round((1 - df_p1[df_p1['Branche'] == option].iloc[0, 1])*100, 2)) + '% Ihrer Wettbewerber voraus!')
     elif option2 == 'Nein':
-        st.caption('Dann geht es Ihnen wie ' + str(100 - df_p1[df_p1['Branche'] == option].iloc[0, 1]) + '% Ihrer Wettbewerber.')
+        st.write('Dann geht es Ihnen wie ' + str(round((1 - df_p1[df_p1['Branche'] == option].iloc[0, 1])*100, 2)) + '% Ihrer Wettbewerber.')
 else:
-    st.caption('Wie stehen Sie im vergleich zu Ihren Wettbewerbern da?')
+    st.write('Wie stehen Sie im vergleich zu Ihren Wettbewerbern da?')
 
 want_to_contribute = st.button("Erfahren Sie wie sich die Verwendung von KI auf den Unternehmenserfolg auswirkt!")
 if want_to_contribute:
