@@ -16,9 +16,10 @@ st.set_page_config(
 template.local_css()
 template.max_width()
 
-colT1,colT2 = st.columns([2.7, 8])
-with colT2:
-    chart = st.empty()
+
+
+st.subheader('Wie viele Unternehmen nutzen bereits KI?')
+chart = st.empty()
 
 b1, b2 = st.columns([1, 1])
 with b1:
@@ -26,25 +27,23 @@ with b1:
 with b2:
     option2 = st.selectbox('Nutzt Ihr Unternehmen KI?', options=['Keine Angabe', 'Ja', 'Nein'], index=0)
 
-c = alt.Chart(df_p1).mark_bar(size=10).encode(
-    x='Anteil',
-    y='Branche',
-    color=alt.condition(
-        alt.datum.Branche == option,
-        alt.value('blue'),
-        alt.value('grey')
-    ),
-    tooltip='Anteil'
-).interactive()
+c = alt.Chart(df_p1).mark_bar().encode(
+        x=alt.X('Anteil', axis=alt.Axis(format='.0%', grid=False, tickCount=6)),
+        y=alt.Y('Branche', sort=alt.EncodingSortField(field='Anteil', order='descending')),
+        color=alt.condition(alt.datum.Branche == option, alt.value('#15C2FF'), alt.value('grey')),
+        tooltip=alt.Tooltip('Anteil', format='.1%')
+    ).properties(width=800, height=250)
 
 
 chart.altair_chart(c)
 
-if option != 'Keine Angabe':
+if option != 'Keine Angabe' and option2 != 'Keine Angabe':
     if option2 == 'Ja':
         st.caption('Dann sind Sie ' + str(100 - df_p1[df_p1['Branche'] == option].iloc[0, 1]) + '% Ihrer Wettbewerber voraus!')
     elif option2 == 'Nein':
-        st.caption('Dann geht es Ihnen wie ' + str(df_p1[df_p1['Branche'] == option].iloc[0, 1]) + '% Ihrer Wettbewerber.')
+        st.caption('Dann geht es Ihnen wie ' + str(100 - df_p1[df_p1['Branche'] == option].iloc[0, 1]) + '% Ihrer Wettbewerber.')
+else:
+    st.caption('Wie stehen Sie im vergleich zu Ihren Wettbewerbern da?')
 
 want_to_contribute = st.button("Erfahren Sie wie sich die Verwendung von KI auf den Unternehmenserfolg auswirkt!")
 if want_to_contribute:

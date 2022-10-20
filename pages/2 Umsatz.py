@@ -10,31 +10,47 @@ from streamlit_extras.switch_page_button import switch_page
 template.local_css()
 template.max_width()
 
-df_p2_melt = pd.melt(df_p2, value_vars=['Anteil Umsatz', 'Anteil Ausgaben'], id_vars=['Branche'])
-df_p2_melt_empty = pd.melt(df_p2, value_vars=['Anteil Umsatz', ' '], id_vars=['Branche'])
+df_p2_melt = pd.melt(df_p2, value_vars=['Umsatz', 'Ausgaben'], id_vars=['Branche']).rename({'value': 'Anteil'}, axis=1)
+df_p2_melt_empty = pd.melt(df_p2, value_vars=['Umsatz', ' '], id_vars=['Branche']).rename({'value': 'Anteil'}, axis=1)
 
 invest = False
 
 chart = st.empty()
 invest = st.button('Mit welchem Invest?')
-
+colors = ['grey', '#15C2FF']
 
 if invest:
-    c = alt.Chart(df_p2_melt).mark_bar().encode(
-        column=alt.Column('Branche', header=alt.Header(orient='bottom')),
-        x=alt.X('variable', axis=alt.Axis(ticks=False, labels=False, title='')),
-        y=alt.Y('value', axis=alt.Axis(grid=False)),
-        color='variable',
-        tooltip=['Branche', 'variable', 'value']
-    ).configure_view(stroke=None)
+    c = alt.Chart(df_p2_melt).transform_calculate(
+            key='datum.variable == "Anteil Unternehmen"'
+        ).transform_joinaggregate(
+            sort_key='argmax(key)', groupby=['Branche']
+        ).transform_calculate(
+            sort_val='datum.sort_key.Anteil'
+        ).mark_bar().encode(
+            column=alt.Column('Branche', header=alt.Header(orient='bottom', labelAngle=-35, labelAlign='right'), sort=alt.SortField("sort_val", order="descending")),
+            x=alt.X('variable', axis=alt.Axis(ticks=False, labels=False, title=''), sort=alt.EncodingSortField(field='Anteil', order='descending')),
+            y=alt.Y('Anteil', axis=alt.Axis(grid=False, tickCount=3, format='.0%'), title='Anteil am Gesamtumsatz'),
+            color=alt.Color('variable', scale=alt.Scale(range=colors), legend=alt.Legend(orient='none', legendX=670, legendY=20, title=None)),
+            tooltip=[alt.Tooltip('Branche'), alt.Tooltip('variable'), alt.Tooltip('Anteil', format='.2%')]
+        ).configure_view(stroke=None).properties(
+            width=50, height=200
+        )
 else:
-    c = alt.Chart(df_p2_melt_empty).mark_bar().encode(
-        column=alt.Column('Branche', header=alt.Header(orient='bottom')),
-        x=alt.X('variable', axis=alt.Axis(ticks=False, labels=False, title='')),
-        y=alt.Y('value', axis=alt.Axis(grid=False)),
-        color='variable',
-        tooltip=['Branche', 'variable', 'value']
-    ).configure_view(stroke=None)
+    c = alt.Chart(df_p2_melt_empty).transform_calculate(
+            key='datum.variable == "Anteil Unternehmen"'
+        ).transform_joinaggregate(
+            sort_key='argmax(key)', groupby=['Branche']
+        ).transform_calculate(
+            sort_val='datum.sort_key.Anteil'
+        ).mark_bar().encode(
+            column=alt.Column('Branche', header=alt.Header(orient='bottom', labelAngle=-35, labelAlign='right'), sort=alt.SortField("sort_val", order="descending")),
+            x=alt.X('variable', axis=alt.Axis(ticks=False, labels=False, title=''), sort=alt.EncodingSortField(field='Anteil', order='descending')),
+            y=alt.Y('Anteil', axis=alt.Axis(grid=False, tickCount=3, format='.0%'), title='Anteil am Gesamtumsatz'),
+            color=alt.Color('variable', scale=alt.Scale(range=colors), legend=alt.Legend(values=['Umsatz'], title=None, orient='none', legendX=670, legendY=20)),
+            tooltip=[alt.Tooltip('Branche'), alt.Tooltip('Anteil', format='.1%')]
+        ).configure_view(stroke=None).properties(
+            width=50, height=200
+        )
 
 chart.altair_chart(c)
 

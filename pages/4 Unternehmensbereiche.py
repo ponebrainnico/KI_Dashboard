@@ -10,9 +10,10 @@ template.local_css()
 template.max_width()
 
 c = alt.Chart(df_p4).mark_bar().encode(
-    x=alt.X('Anteil'),
-    y=alt.Y('Unternehmensbereich')
-)
+        x=alt.X('Anteil', axis=alt.Axis(format='.0%', grid=False), title='Anteil'),
+        y=alt.Y('Unternehmensbereich', sort=alt.EncodingSortField(field='Anteil', order='descending')),
+        tooltip=alt.Tooltip('Anteil', format='.0%')
+    ).configure_mark(color='#15C2FF')
 
 st.altair_chart(c)
 

@@ -10,21 +10,33 @@ from streamlit_extras.switch_page_button import switch_page
 template.local_css()
 template.max_width()
 
-df_p3_melt = pd.melt(df_p3, value_vars=['aktiv', 'vermutlich stillgelegt', 'geschlossen'], id_vars=['Unternehmen'])
-c = alt.Chart(df_p3_melt).mark_bar().encode(
-    x=alt.X('sum(value)', stack='normalize'),
-    y=alt.Y('Unternehmen'),
-    color='variable'
-).properties(width=800, height=250)
-
-text = alt.Chart(df_p3_melt).mark_text(dx=-18, dy=1.5, color='white').encode(
-        x=alt.X('sum(value)', stack='normalize'),
-        y=alt.Y('Unternehmen'),
-        detail='variable',
-        text=alt.Text('sum(value)', format='.0f')
+cat_order = ['aktiv', 'vermutlich stillgelegt', 'geschlossen']
+df_p3_melt = pd.melt(df_p3, value_vars=cat_order, id_vars=['Unternehmen'])
+color_scale = alt.Scale(
+    domain=cat_order,
+    range=['#15C2FF', 'lightgrey', 'grey']
 )
 
-st.altair_chart(c + text)
+c = alt.Chart(df_p3_melt).mark_bar().encode(
+        x=alt.X('sum(value)', title='Anteil', stack='normalize', axis=alt.Axis(format='.0%', grid=False, tickCount=6)),
+        y=alt.Y('Unternehmen', sort=alt.SortField('sum(value)', order='descending'), title='Unternehmenstyp'),
+        color=alt.Color('variable:N', sort=cat_order, scale=color_scale, title='Status'),
+        order=alt.Order('color:Q'),
+        tooltip=[alt.Tooltip('variable', title='Status'), alt.Tooltip('value', title='Anteil', format='.0%')]
+    ).properties(width=800, height=250)
+
+# text = alt.Chart(df_p3_melt).mark_text(
+#     align='right', color='white', dx=-2.5).encode(
+#         x=alt.X('value', stack='normalize'),
+#         y=alt.Y('Unternehmen'),
+#         detail='variable',
+#         order='cat_order:O',
+#         text=alt.Text('value:Q', format='.0%')
+# )
+
+st.altair_chart(c)
+
+st.write('KI-Unternehmen, die zwischen 1995 und 2921 gegründet wurden, haben eine höhere Lebensdauer als der Durchschnitt.')
 
 want_to_contribute = st.button("Erfahren Sie in welchem Unternehmensbereichen KI am häufigstein eingesetzt wird!")
 if want_to_contribute:
