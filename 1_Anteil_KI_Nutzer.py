@@ -21,6 +21,13 @@ template.max_width()
 st.subheader('Wie viele Unternehmen nutzen bereits KI?')
 chart = st.empty()
 
+text = '''Zwar ist KI in aller Munde, doch nur wenige Unternehmen nutzen bereits KI-Lösungen.
+IT-Unternehmen (IKT) sind hier noch am besten aufgestellt(, da KI teilweise zum Kerngeschäft gehört), aber selbst hier nutzen nur knapp 18% KI.
+In den meisten anderen Branchen liegt der Anteil sogar unter 10% (Gesamtdurchschnitt: 5,8%). Der Einsatz von KI kann daher sehr gut genutzt werden, um einen Wettbewerbsvorteil zu schaffen.\n
+Wie stehen Sie im Vergleich zu ihren Wettbewerbern da?'''
+
+st.write(text)
+
 b1, b2 = st.columns([1, 1])
 with b1:
     option = st.selectbox('Ihre Branche', options=list(df_p1['Branche'].sort_values()) + ['Keine Angabe'], index=11)
@@ -37,13 +44,15 @@ c = alt.Chart(df_p1).mark_bar().encode(
 
 chart.altair_chart(c)
 
+
+
 if option != 'Keine Angabe' and option2 != 'Keine Angabe':
     if option2 == 'Ja':
         st.write('Dann sind Sie ' + str(round((1 - df_p1[df_p1['Branche'] == option].iloc[0, 1])*100, 2)) + '% Ihrer Wettbewerber voraus!')
     elif option2 == 'Nein':
         st.write('Dann geht es Ihnen wie ' + str(round((1 - df_p1[df_p1['Branche'] == option].iloc[0, 1])*100, 2)) + '% Ihrer Wettbewerber.')
 else:
-    st.write('Wie stehen Sie im vergleich zu Ihren Wettbewerbern da?')
+    st.write('#')
 
 want_to_contribute = st.button("Erfahren Sie wie sich die Verwendung von KI auf den Unternehmenserfolg auswirkt!")
 if want_to_contribute:
