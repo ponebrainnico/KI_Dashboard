@@ -17,6 +17,11 @@ c = alt.Chart(df_p4).mark_bar().encode(
 
 st.altair_chart(c)
 
+text = '''KI kann in fast allen Unternehmensbereichen eingesetzt werden.
+Vor allem das Marketing ist ein belieber Einsatzort aber selbst in der Personalabteilung und im Controlling gibt es Einsatzmöglichkeiten.'''
+
+st.write(text)
+
 want_to_contribute = st.button("Was ist nötig um KI erfolgreich einzusetzen?")
 if want_to_contribute:
     switch_page("erfolgsfaktoren")

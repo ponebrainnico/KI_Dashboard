@@ -26,19 +26,23 @@ c = alt.Chart(df_p3_melt).mark_bar().encode(
     ).properties(width=800, height=250)
 
 # text = alt.Chart(df_p3_melt).mark_text(
-#     align='right', color='white', dx=-2.5).encode(
-#         x=alt.X('value', stack='normalize'),
-#         y=alt.Y('Unternehmen'),
-#         detail='variable',
-#         order='cat_order:O',
-#         text=alt.Text('value:Q', format='.0%')
+#             align='right', color='white', dx=-2.5
+#        ).encode(
+#             x=alt.X('value', stack='normalize'),
+#             y=alt.Y('Unternehmen'),
+#             detail='variable',
+#             order='cat_order:O',
+#             text=alt.Text('value:Q', format='.0%')
 # )
 
 st.altair_chart(c)
 
-st.write('KI-Unternehmen, die zwischen 1995 und 2921 gegründet wurden, haben eine höhere Lebensdauer als der Durchschnitt.')
+text = '''Der Einsatz von KI zeigt auch positive Auswirkungen, auf weitere Faktoren:
+So haben Startups, die KI nutzen, eine wesentlich höhere Überlebensrate als der Gesamtdurchschnitt von 45%.
+Immer noch nicht überzeugt? '''
+st.write(text)
 
-want_to_contribute = st.button("Erfahren Sie in welchem Unternehmensbereichen KI am häufigstein eingesetzt wird!")
+want_to_contribute = st.button("Dann erfahren Sie hier in welchen Unternehmensbereichen KI am häufigstein eingesetzt wird!")
 if want_to_contribute:
     switch_page("unternehmensbereiche")
 

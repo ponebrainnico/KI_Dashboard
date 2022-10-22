@@ -16,7 +16,19 @@ df_p2_melt_empty = pd.melt(df_p2, value_vars=['Umsatz', ' '], id_vars=['Branche'
 invest = False
 
 chart = st.empty()
-invest = st.button('Mit welchem Invest?')
+
+text = '''Da nur relativ wenige Unternehmen bis jetzt KI nutzen, ist es nicht verwunderlich, dass der Anteil des Umsatzes am Gesamtumsatz, der mit Produkten, bei denen KI genutzt wird,
+ generiert wird, noch relativ gering ist. Selbst bei IT-Unternehmen sind es gerade einmal 3,3%. Doch mit welchem Invest wird dieser Umsatz generiert?'''
+
+text2 = '''Die Kosten für KI sind weit unter den generierten Umsätzen.
+Natürlich können zu den KI kosten noch andere Kosten kommen, aber mit einem 1 zu ~5,5 Kosten-Umsatzverhältnis ist KI nicht so teuer, wie man vielleicht vermuten würde.'''
+
+st.write(text)
+invest = st.button('Klicken Sie hier, um mehr zu erfahren!')
+
+if invest:
+    st.write(text2)
+
 colors = ['grey', '#15C2FF']
 
 if invest:
@@ -53,8 +65,6 @@ else:
         )
 
 chart.altair_chart(c)
-
-
 
 want_to_contribute = st.button("KI hat nicht nur positive Auswirkungen auf den Umsatz!")
 if want_to_contribute:
