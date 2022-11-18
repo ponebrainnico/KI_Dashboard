@@ -15,6 +15,7 @@ df_p2_melt_empty = pd.melt(df_p2, value_vars=['Umsatz', ' '], id_vars=['Branche'
 
 invest = False
 
+st.header('Wie viel Umsatz wird mit KI-Produkten generiert?')
 chart = st.empty()
 
 text = '''Da nur relativ wenige Unternehmen bis jetzt KI nutzen, ist es nicht verwunderlich, dass der Anteil des Umsatzes am Gesamtumsatz, der mit Produkten, bei denen KI genutzt wird,
@@ -24,12 +25,12 @@ text2 = '''Die Kosten für KI sind weit unter den generierten Umsätzen.
 Natürlich können zu den KI kosten noch andere Kosten kommen, aber mit einem 1 zu ~5,5 Kosten-Umsatzverhältnis ist KI nicht so teuer, wie man vielleicht vermuten würde.'''
 
 st.write(text)
-invest = st.button('Klicken Sie hier, um mehr zu erfahren!')
-
-if invest:
+# invest = st.button('Klicken Sie hier, um mehr zu erfahren!')
+with st.expander('Klicken Sie hier, um mehr zu erfahren!'):
     st.write(text2)
+st.caption('Quelle: [BMWK, 2019](https://www.bmwk.de/Redaktion/DE/Publikationen/Wirtschaft/einsatz-von-ki-deutsche-wirtschaft.pdf?__blob=publicationFile&v=8) (Abgerufen am 18.10.2022)')
 
-colors = ['grey', '#15C2FF']
+colors = ['#434343', '#15C2FF']
 
 if invest:
     c = alt.Chart(df_p2_melt).transform_calculate(
@@ -58,16 +59,17 @@ else:
             column=alt.Column('Branche', header=alt.Header(orient='bottom', labelAngle=-35, labelAlign='right'), sort=alt.SortField("sort_val", order="descending")),
             x=alt.X('variable', axis=alt.Axis(ticks=False, labels=False, title=''), sort=alt.EncodingSortField(field='Anteil', order='descending')),
             y=alt.Y('Anteil', axis=alt.Axis(grid=False, tickCount=3, format='.0%'), title='Anteil am Gesamtumsatz'),
-            color=alt.Color('variable', scale=alt.Scale(range=colors), legend=alt.Legend(values=['Umsatz'], title=None, orient='none', legendX=670, legendY=20)),
+            color=alt.Color('variable', scale=alt.Scale(range=colors), legend=None),
             tooltip=[alt.Tooltip('Branche'), alt.Tooltip('Anteil', format='.1%')]
         ).configure_view(stroke=None).properties(
             width=50, height=200
         )
 
 chart.altair_chart(c)
+st.write('#')
 
-want_to_contribute = st.button("KI hat nicht nur positive Auswirkungen auf den Umsatz!")
+st.write('Nächster Schritt:')
+st.write('KI hat nicht nur positive Auswirkungen auf den Umsatz!')
+want_to_contribute = st.button('WEITER ZUR UNTERNEHMENSLEBENSDAUER')
 if want_to_contribute:
     switch_page("unternehmenslebensdauer")
-
-st.write('Quelle: [BMWK, 2019](https://www.bmwk.de/Redaktion/DE/Publikationen/Wirtschaft/einsatz-von-ki-deutsche-wirtschaft.pdf?__blob=publicationFile&v=8) (Abgerufen am 18.10.2022)')
