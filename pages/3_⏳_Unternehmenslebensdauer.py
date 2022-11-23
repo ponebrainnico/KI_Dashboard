@@ -41,7 +41,7 @@ c = alt.Chart(df_p3_melt).mark_bar().encode(
 #             text=alt.Text('value:Q', format='.0%')
 # )
 
-st.altair_chart(c)
+st.altair_chart(c, use_container_width=True)
 
 text = '''Der Einsatz von KI zeigt auch positive Auswirkungen, auf weitere Faktoren:
 So haben Startups, die KI nutzen, eine wesentlich höhere Überlebensrate als der Gesamtdurchschnitt von 45%.'''

@@ -6,6 +6,11 @@ from streamlit_extras.switch_page_button import switch_page
 alt.renderers.set_embed_options(actions=False)
 
 
+def v_space(lines):
+    for _ in range(lines):
+        st.write('&nbsp;')
+
+
 st.set_page_config(
     page_title="KI Dashboard",
     page_icon="🔎",
@@ -24,7 +29,7 @@ chart = st.empty()
 
 b1, b2, b3 = st.columns([2, 2, 1])
 with b1:
-    st.write('#')
+    v_space(1)
     option2 = st.checkbox('Mein Unternehmen nutzt KI.')
 with b2:
     # option2 = st.selectbox('Nutzt Ihr Unternehmen KI?', options=['Keine Angabe', 'Ja', 'Nein'], index=0)
@@ -50,7 +55,7 @@ c = alt.Chart(df_p1).mark_bar().encode(
         color=alt.condition(alt.datum.Branche == option, alt.value('#15C2FF'), alt.value('#434343')),
         tooltip=alt.Tooltip('Anteil', format='.1%')
     ).properties(width=800, height=250)
-st.altair_chart(c)
+st.altair_chart(c, use_container_width=True)
 
 text = '''Zwar ist KI in aller Munde, doch nur wenige Unternehmen nutzen bereits KI-Lösungen.
 IT-Unternehmen (IKT) sind hier noch am besten aufgestellt(, da KI teilweise zum Kerngeschäft gehört), aber selbst hier nutzen nur knapp 18% KI.

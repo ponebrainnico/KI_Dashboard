@@ -21,7 +21,7 @@ c = alt.Chart(df_p4).mark_bar().encode(
         tooltip=alt.Tooltip('Anteil', format='.0%')
     ).configure_mark(color='#15C2FF').properties(width=800, height=250).configure_axis(labelLimit=400)
 
-st.altair_chart(c)
+st.altair_chart(c, use_container_width=True)
 
 text = '''KI wird in fast allen Unternehmensbereichen eingesetzt werden.
 Vor allem Marketing, Produktion und Kundendienst sind beliebe Einsatzorte.

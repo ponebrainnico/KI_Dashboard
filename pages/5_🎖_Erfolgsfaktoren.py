@@ -43,7 +43,7 @@ c = alt.Chart(df_p5_melt).transform_calculate(
 #         text=alt.Text('sum(value)', format='.0f')
 # )
 
-st.altair_chart(c)
+st.altair_chart(c, use_container_width=True)
 
 text = '''Es gibt eine große Anzahl an Faktoren, die die Wahrscheinlichkeit eines KI Einsatzes beeinflussen.
 Viele Unternehmen, die noch keine KI nutzen, geben an, dass eine bessere IT Austattung und datenschutzkonforme Cloud-Angebote entscheidende Faktoren sind.
