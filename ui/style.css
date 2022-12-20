@@ -1,10 +1,36 @@
-.css-14xtw13.e8zbici0{
+/*.css-14xtw13.e8zbici0{
     display: none;
+}*/
+
+/* .css-18e3th9 {
+    padding-top: 0rem;
+    padding-bottom: 0.5rem;
+} */
+
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+html, body, [class*="css"]  {
+font-family: 'Roboto', sans-serif;
 }
 
-.css-18e3th9 {
-    padding-top: 1rem;
-    padding-bottom: 10rem;
-    padding-left: 5rem;
-    padding-right: 5rem;
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+  }
+
+.main .block-container {
+    max-width: 1080px;
+    padding-top: 0rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 0rem;
+}
+
+canvas {
+    color: #ffffff
 }
