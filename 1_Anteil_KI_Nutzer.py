@@ -66,24 +66,28 @@ else:
 c = alt.Chart(df_p1).mark_bar(size=18).transform_calculate(
     y="split(datum.y, '/ ')"
     ).encode(
-        x=alt.X('Anteil', axis=alt.Axis(format='.0%', tickCount=6, tickSize=15, labelPadding=8)),
-        y=alt.Y('Branche', sort=alt.EncodingSortField(field='Anteil', order='descending'), axis=alt.Axis(tickSize=0, labelPadding=15)),
+        x=alt.X('Anteil', axis=alt.Axis(format='.0%', tickCount=6, tickSize=15, labelPadding=8, gridDash=[2, 3])),
+        y=alt.Y('Branche',
+                sort=alt.EncodingSortField(field='Anteil', order='descending'),
+                axis=alt.Axis(tickSize=0, labelPadding=15),
+                scale=alt.Scale(paddingOuter=0.7)),
         color=alt.condition(alt.datum.Branche == option, alt.value('#15C2FF'), alt.value('#434343')),
         tooltip=alt.Tooltip('Anteil', format='.1%')
     ).configure_axisY(
-        titleAlign='left',
+        titleAlign='right',
         titleAngle=0,
         titleY=-10,
-        titleX=-70
+        titleX=-15
     ).configure_axisX(
-        titleY=55
+        titleY=55,
+        labelFlush=False
     ).configure_axis(
         labelFontSize=13,
         titleFontSize=15
     ).configure_view(
         strokeWidth=0
     ).properties(height=450)
-st.altair_chart(c, use_container_width=True)
+st.altair_chart(c, use_container_width=True, theme=None)
 
 text = '''Zwar ist KI in aller Munde, doch nur wenige Unternehmen nutzen bereits KI-Lösungen.
 IT-Unternehmen (IKT) sind hier noch am besten aufgestellt, da KI teilweise zum Kerngeschäft gehört, aber selbst hier nutzen nur knapp 18 % KI.

@@ -35,7 +35,6 @@ Natürlich können zu den KI-Kosten noch andere Kosten kommen, aber mit einem 1 
 
 st.write(text)
 invest = st.button('Klicken Sie hier, um mehr zu erfahren!')
-# with st.expander('Klicken Sie hier, um mehr zu erfahren!'):
 if invest:
     st.info(text2, icon="ℹ️")
 st.caption('Quelle: [BMWK, 2019](https://www.bmwk.de/Redaktion/DE/Publikationen/Wirtschaft/einsatz-von-ki-deutsche-wirtschaft.pdf?__blob=publicationFile&v=8) (Abgerufen am 18.10.2022)')
@@ -71,7 +70,7 @@ else:
             tooltip=[alt.Tooltip('Branche'), alt.Tooltip('Anteil', format='.1%')]
         ).configure_view(stroke=None).properties(width=70, height=200)
 
-chart.altair_chart(c)
+chart.altair_chart(c, use_container_width=True, theme=None)
 st.write('###')
 
 st.markdown(f'**<p style="color:#15C2FF">Nächster Schritt:</p>**', unsafe_allow_html=True)

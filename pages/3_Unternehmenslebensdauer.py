@@ -23,22 +23,30 @@ cat_order = ['aktiv', 'vermutlich stillgelegt', 'geschlossen']
 df_p3_melt = pd.melt(df_p3, value_vars=cat_order, id_vars=['Unternehmen'])
 color_scale = alt.Scale(
     domain=cat_order,
-    range=['#15C2FF', '#2E75FD', '#252A2F']
+    range=['#15C2FF', '#5D666E', '#252A2F']
 )
 
 c = alt.Chart(df_p3_melt).mark_bar(size=22).encode(
-        x=alt.X('sum(value)', title='Anteil', stack='normalize', axis=alt.Axis(format='.0%', grid=True, tickCount=6, tickSize=15, labelPadding=8)),
-        y=alt.Y('Unternehmen', sort=alt.SortField('sum(value)', order='descending'), title='Unternehmenstyp', axis=alt.Axis(tickSize=0, labelPadding=15)),
+        x=alt.X('sum(value)',
+                title='Anteil',
+                stack='normalize',
+                axis=alt.Axis(format='.0%', grid=True, tickCount=6, tickSize=15, labelPadding=8, gridDash=[2, 3])),
+        y=alt.Y('Unternehmen',
+                sort=alt.SortField('sum(value)',
+                order='descending'), title='Unternehmenstyp',
+                axis=alt.Axis(tickSize=0, labelPadding=15),
+                scale=alt.Scale(paddingOuter=0.4)),
         color=alt.Color('variable:N', sort=cat_order, scale=color_scale, title='Status'),
         order=alt.Order('color:Q'),
         tooltip=[alt.Tooltip('variable', title='Status'), alt.Tooltip('value', title='Anteil', format='.0%')]
     ).configure_axisY(
-        titleAlign='left',
+        titleAlign='right',
         titleAngle=0,
         titleY=-20,
-        titleX=-130
+        titleX=-15
     ).configure_axisX(
-        titleY=50
+        titleY=50,
+        labelFlush=False
     ).configure_view(
         strokeWidth=0
     ).configure_axis(
@@ -46,17 +54,8 @@ c = alt.Chart(df_p3_melt).mark_bar(size=22).encode(
         titleFontSize=15
     ).properties(height=320)
 
-# text = alt.Chart(df_p3_melt).mark_text(
-#             align='right', color='white', dx=-2.5
-#        ).encode(
-#             x=alt.X('value', stack='normalize'),
-#             y=alt.Y('Unternehmen'),
-#             detail='variable',
-#             order='cat_order:O',
-#             text=alt.Text('value:Q', format='.0%')
-# )
 
-st.altair_chart(c, use_container_width=True)
+st.altair_chart(c, use_container_width=True, theme=None)
 
 text = '''Der Einsatz von KI zeigt auch positive Auswirkungen auf weitere Faktoren:
 So haben Start-ups, die KI nutzen, eine wesentlich höhere Überlebensrate als der Gesamtdurchschnitt von 45 %.'''

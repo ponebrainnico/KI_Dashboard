@@ -22,8 +22,12 @@ st.write('###')
 c = alt.Chart(df_p4).mark_bar(size=18).transform_calculate(
         y="split(datum.y, '/')"
     ).encode(
-        x=alt.X('Anteil', axis=alt.Axis(format='.0%', tickCount=4, tickSize=15, labelPadding=8)),
-        y=alt.Y('y', sort=alt.EncodingSortField(field='Anteil', order='descending'), title=['Unternehmens-', 'bereich'], axis=alt.Axis(tickSize=0, labelPadding=15)),
+        x=alt.X('Anteil', axis=alt.Axis(format='.0%', tickCount=4, tickSize=15, labelPadding=8, gridDash=[2, 3])),
+        y=alt.Y('y',
+                sort=alt.EncodingSortField(field='Anteil', order='descending'),
+                title=['Unternehmens-', 'bereich'],
+                axis=alt.Axis(tickSize=0, labelPadding=15),
+                scale=alt.Scale(paddingOuter=0.7)),
         tooltip=alt.Tooltip('Anteil', format='.0%')
     ).configure_mark(color='#15C2FF'
     ).properties(height=550
@@ -37,12 +41,13 @@ c = alt.Chart(df_p4).mark_bar(size=18).transform_calculate(
         titleY=-30,
         titleX=-15
     ).configure_axisX(
-        titleY=55
+        titleY=55,
+        labelFlush=False
     ).configure_view(
         strokeWidth=0
     )
 
-st.altair_chart(c, use_container_width=True)
+st.altair_chart(c, use_container_width=True, theme=None)
 
 text = '''KI wird in fast allen Unternehmensbereichen eingesetzt.
 Vor allem Marketing, Produktion und Kundendienst sind beliebte Einsatzorte.
