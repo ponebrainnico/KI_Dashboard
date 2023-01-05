@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import ui.template as template
 from daten.datenbank import df_p3
 import altair as alt
@@ -57,11 +58,16 @@ c = alt.Chart(df_p3_melt).mark_bar(size=22).encode(
 
 st.altair_chart(c, use_container_width=True, theme=None)
 
+components.html('''<div style="text-align:right; color:#5D666E; font-family:'Roboto', sans-serif; font-size:0.63em">
+                        Quelle: 
+                        <a style="color:#007da7" href="https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-startups.pdf?__blob=publicationFile&v=3" target="_blank">BMWK, 2022</a>
+                         (Abgerufen am 18.10.2022)
+                   </div>''', height=40)
+
 text = '''Der Einsatz von KI zeigt auch positive Auswirkungen auf weitere Faktoren:
 So haben Start-ups, die KI nutzen, eine wesentlich höhere Überlebensrate als der Gesamtdurchschnitt von 45 %.'''
 st.write(text)
-st.caption('Quelle: [BMWK, 2021](https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-startups.pdf?__blob=publicationFile&v=3) (Abgerufen am 18.10.2022)')
-st.write('###')
+st.write('')
 
 st.markdown(f'**<p style="color:#15C2FF">Nächster Schritt:</p>**', unsafe_allow_html=True)
 next = '''Bis jetzt haben wir nur gezeigt, warum sich der Einsatz von KI lohnt. Im Folgenden zeigen wir Ihnen, wo KI überall eingesetzt wird.'''

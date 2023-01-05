@@ -24,7 +24,7 @@ df_p2_melt_empty = pd.melt(df_p2, value_vars=['Umsatz', ' '], id_vars=['Branche'
 
 invest = False
 
-st.header('Wie viel Umsatz wird mit KI-Produkten generiert?')
+st.header('Wie wirkt sich der KI-Einsatz auf den Umsatz aus?')
 chart = st.empty()
 
 text = '''Da nur relativ wenige Unternehmen bis jetzt KI nutzen, ist es nicht verwunderlich, dass der Anteil des Umsatzes am Gesamtumsatz, der mit Produkten, bei denen KI genutzt wird,
@@ -71,7 +71,7 @@ else:
         ).configure_view(stroke=None).properties(width=70, height=200)
 
 chart.altair_chart(c, use_container_width=True, theme=None)
-st.write('###')
+st.write('')
 
 st.markdown(f'**<p style="color:#15C2FF">Nächster Schritt:</p>**', unsafe_allow_html=True)
 next = '''Aber der Einsatz von KI hat nicht nur positive Auswirkungen auf den Umsatz.

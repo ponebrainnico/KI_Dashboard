@@ -3,3 +3,6 @@ primaryColor="#15c2ff"
 backgroundColor="#000000"
 secondaryBackgroundColor="#5D666E"
 textColor="#ffffff"
+
+# [server]
+# runOnSave = true

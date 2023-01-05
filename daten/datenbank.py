@@ -1,8 +1,11 @@
 import pandas as pd
 
-df_p1 = pd.DataFrame({'Branche': ['IKT', 'Finanzdienstleistungen', 'B2B Dienstleistungen', 'Elektrotechnik/ Maschinenbau',
+df_p1 = pd.DataFrame({'Branche_kurz': ['IKT', 'Finanzdienstleist.', 'B2B Dienstleist.', 'Elektrot./Maschinenb.',
                                   'Fahrzeugbau', 'Chemie/Ph., Gr.st.', 'Ver-/Entsorg., Bg.b.', 'Sonst. Verarb. Gew.', 'Sonst. Dienstleist.',
                                   'Verkehr, Logistik', 'Großhandel'],
+                      'Branche': ['Informations- und Kommunikationstechnologien ', 'Finanzdienstleistungen', 'Unternehmensnahe Dienstleistungen', 'Elektrotechnik und Maschinenbau',
+                                  'Fahrzeugbau', 'Chemie-, Pharma- und Grundstoffindustrie', 'Ver- und Entsorgung, Bergbau ', 'Sonstiges Verarbeitendes Gewerbe', 'Sonstige Dienstleistungen',
+                                  'Verkehr und Logistik', 'Großhandel'],
                       'Anteil': [0.178, 0.122, 0.111, 0.068, 0.051, 0.046, 0.036, 0.033, 0.025, 0.015, 0.01]})
 
 df_p2 = pd.DataFrame({'Branche': ['IKT', 'Finanzdienstleistungen', 'B2B Dienstleistungen', 'Elektrotechnik/ Maschinenbau',

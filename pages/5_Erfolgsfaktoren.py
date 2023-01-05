@@ -61,20 +61,22 @@ c = alt.Chart(df_p5_melt).transform_calculate(
     )
 
 st.altair_chart(c, use_container_width=True, theme=None)
-st.caption('Quelle: [BMWK, 2021](https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-herausforderungen.pdf?__blob=publicationFile&v=4) (Abgerufen am 18.10.2022)')
-st.write('###')
-# components.html('''<div style="text-align:right">
-#                         Quelle: 
-#                         <a href="https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-herausforderungen.pdf?__blob=publicationFile&v=4" target="_blank">BMWK, 2021</a>
-#                          (Abgerufen am 18.10.2022)
-#                    </div>''')
+# st.caption('Quelle: [BMWK, 2021](https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-herausforderungen.pdf?__blob=publicationFile&v=4) (Abgerufen am 18.10.2022)')
+
+components.html('''<div style="text-align:right; color:#5D666E; font-family:'Roboto', sans-serif; font-size:0.63em">
+                        Quelle: 
+                        <a style="color:#007da7" href="https://www.de.digital/DIGITAL/Redaktion/DE/Digitalisierungsindex/Publikationen/publikation-download-ki-herausforderungen.pdf?__blob=publicationFile&v=4" target="_blank">
+                            BMWK, 2021
+                        </a>
+                        (Abgerufen am 18.10.2022)
+                   </div>''', height=40)
 
 text = '''Es gibt eine große Anzahl an Faktoren, die die Wahrscheinlichkeit eines KI-Einsatzes beeinflussen.
 Viele Unternehmen, die noch keine KI nutzen, geben an, dass eine bessere IT-Ausstattung und datenschutzkonforme Cloud-Angebote entscheidende Faktoren sind.
 Aber auch die Verfügbarkeit von Daten und Fachkräften sind wichtig. Bei all diesen Faktoren können wir Sie unterstützen!
 Unser Expertenteam berät Sie gerne, wie Sie KI gewinnbringend in Ihrem Unternehmen einsetzen können.'''
 st.write(text)
-st.write('###')
+st.write('')
 
 st.markdown(f'**<p style="color:#15C2FF">Nächster Schritt:</p>**', unsafe_allow_html=True)
 st.write('Haben Sie ein paar Ideen sammeln können, wie KI Ihr Unternehmen optimieren könnte? Sprechen Sie uns gerne an, damit wir Ihnen individualisierte Lösungen vorschlagen können!!')
